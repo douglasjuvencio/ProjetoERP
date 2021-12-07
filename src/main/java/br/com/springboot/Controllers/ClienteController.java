@@ -30,6 +30,7 @@ public class ClienteController {
         return this.clienteRepositary.save(cliente);
     }
 
+    //Funcao pra achar o nome da pessoa pelo campo "nome"
     @GetMapping("buscanome/{nome}")
     public List<Cliente> buscanome(@PathVariable("nome") String nome){
         return this.clienteRepositary.findByNomeIgnoreCase(nome) ;

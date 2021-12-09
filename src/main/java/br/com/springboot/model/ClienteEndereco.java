@@ -14,21 +14,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Cliente implements Serializable {
+
+public class ClienteEndereco implements Serializable {
     private static final long serialVersionID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany
-    private List<ClienteEndereco> clienteEndereco;
+    @ManyToOne
+    private Cliente cliente;
+   // private List<Cliente> cliente;
 
-    private String nome;
-    private String cpfcnpj;
-    private String tipopessoa;
-    private String numerotelefone ;
-    private String numerocelular ;
-
+    private char    tipoEndereco ; // E= Entrega , C=Cobranca
+    private String  logradouro ;
+    private String  bairro ;
+    private String  cep ;
+    private Integer codcidade ;// indica o cod da cidade
+    private String  pessoacontato;
 
 }

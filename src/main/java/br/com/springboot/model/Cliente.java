@@ -21,7 +21,7 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "cliente")
     private List<ClienteEndereco> clienteEndereco;
 
     private String nome;
@@ -29,6 +29,5 @@ public class Cliente implements Serializable {
     private String tipopessoa;
     private String numerotelefone ;
     private String numerocelular ;
-
 
 }

@@ -23,14 +23,19 @@ public class ClienteEndereco implements Serializable {
     private long id;
 
     @ManyToOne
+    @JoinColumn(name="id_Cliente")
     private Cliente cliente;
-   // private List<Cliente> cliente;
+
+    // inicio
+    @ManyToOne
+    @JoinColumn(name="id_Cidade")
+    private Cidade cidade;
+    //fim
 
     private char    tipoEndereco ; // E= Entrega , C=Cobranca
     private String  logradouro ;
     private String  bairro ;
     private String  cep ;
-    private Integer codcidade ;// indica o cod da cidade
     private String  pessoacontato;
 
 }

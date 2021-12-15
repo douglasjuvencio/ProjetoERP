@@ -21,11 +21,13 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public Optional<Cliente> cliente(@PathVariable("id") long id){
+
         return this.clienteRepositary.findById(id) ;
     }
 
     @PostMapping("/")
     public Cliente cliente(@RequestBody Cliente cliente){
+
         return this.clienteRepositary.save(cliente);
     }
 

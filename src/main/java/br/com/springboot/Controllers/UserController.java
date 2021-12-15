@@ -3,42 +3,57 @@ package br.com.springboot.Controllers;
 import br.com.springboot.Repositary.UserRepositary;
 import br.com.springboot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/usuario")
 
 public class UserController {
 
     private List<User> users = new ArrayList();
 
-    @Autowired
+    @Autowired // esse  comando insere todas as funcoes do repositario do jpa
     private UserRepositary userRepositary;
 
-
-    @GetMapping("/{id}")
-    public Optional<User> user(@PathVariable("id") long id){
-        return this.userRepositary.findById(id) ;
-    }
-
-    @PostMapping("/")
+    //salva os usuarios
+    @PostMapping("/salva")
     public User user(@RequestBody User user){
-
         return this.userRepositary.save(user);
     }
 
-    @GetMapping("/list")
+    //delete os usuarios[id
+    @DeleteMapping("/deleta")
+    @ResponseBody // comando traz uma resposta do corpo
+    public ResponseEntity<String> delete (@RequestParam Long iduser){
+        //o comando ResponseEntity traz todos os dados do banco de dados
+        this.userRepositary.deleteById(iduser);
+        return new ResponseEntity<String>("Usuario Deletado", HttpStatus.OK);
+    }
+
+    @PutMapping("/atualiza")
+    @ResponseBody // comando traz uma resposta do corpo
+    public ResponseEntity<User> atualiza (@RequestBody User user){
+        User user1 = userRepositary.saveAndFlush(user);
+        return new ResponseEntity<User>(user1, HttpStatus.OK);
+    }
+
+    @GetMapping("/procuratodos")
     public List<User>  List(){
         return this.userRepositary.findAll() ;
     }
 
-    @GetMapping("/list/{id}")
-    public List<User>  listMorethan(@PathVariable("id") long id){
-        return this.userRepositary.findAllMorethan(id);
+    @GetMapping("/procuramaiorque/{id}")
+    public List<User>  procuramaiorque(@PathVariable("id") long id){
+        return this.userRepositary.procuramaiorque(id);
     }
 
+    @GetMapping("/procurapornome/{nome}")
+    public List<User>  procurapornome(@PathVariable("nome") String nome){
+        return this.userRepositary.procurapornome(nome);
+    }
 }

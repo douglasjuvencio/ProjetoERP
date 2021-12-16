@@ -22,5 +22,5 @@ public class User implements Serializable {
     private long id;
 
     private String nome;
-    private String username;
+    private String senha;
 }

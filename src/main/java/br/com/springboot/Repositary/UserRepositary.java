@@ -14,4 +14,7 @@ public interface UserRepositary extends JpaRepository<User, Long> {
     @Query("SELECT u from User u where u.nome like %?1%")
     public List<User> procurapornome(@Param("nome") String nome);
 
+    @Query("SELECT u from User u where u.id = :id")
+    public User procuraporid(@Param("id") long id);
+
 }

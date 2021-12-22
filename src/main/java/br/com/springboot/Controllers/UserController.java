@@ -52,8 +52,20 @@ public class UserController {
         return this.userRepositary.procuramaiorque(id);
     }
 
-    @GetMapping("/procurapornome/{nome}")
-    public List<User>  procurapornome(@PathVariable("nome") String nome){
-        return this.userRepositary.procurapornome(nome);
+    @GetMapping("/procurapornome")
+    @ResponseBody
+    public  ResponseEntity<List<User> > procurapornome( @RequestParam(name = "nome") String nome){
+        List<User> usuario  = userRepositary.procurapornome(nome.trim().toUpperCase());
+        return new ResponseEntity<List<User>>(usuario,HttpStatus.OK);
     }
+
+    @GetMapping("/procuraporid")
+    public  ResponseEntity<User> procuraporid( @RequestParam(name = "id") long id){
+        User usuario  = userRepositary.procuraporid(id);
+        return new ResponseEntity<User>(usuario,HttpStatus.OK);
+    }
+
+
+
+
 }

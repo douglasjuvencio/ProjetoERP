@@ -9,43 +9,148 @@
 
     <form action="" id="formLogin">
         <div class="col-auto">
-            <label for="nome" class="form-label">lNome</label>
+            <label for="nome" class="form-label">Nome</label>
             <input type="text" class="form-control" id="nome" >
         </div>
 
         <div class="col-auto">
-            <label for="senha" class="form-label">lSenha</label>
+            <label for="senha" class="form-label">Senha</label>
             <input type="text" class="form-control" id="senha" >
         </div>
     </form>
 
-    <button type="button" class="btn btn-primary" onclick="validacaologin()">Acessar</button>
+    <button type="button" class="btn btn-primary" onclick="cadastraUsuario()">Gravar</button>
+    <input  type="button" class="btn btn-primary" onclick="limpaForm()" value="Novo">
+    <input  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#telaPesquisaModal" value="Pesquisar">
+
+    <!-- Modal -->
+    <div class="modal fade" id="telaPesquisaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pesquisa Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nomeBusca" class="col-form-label">Informe o nome:</label>
+                            <input type="text" class="form-control" id="nomeBusca">
+                        </div>
+
+                        <button type="button" class="btn btn-success"  onclick="pesquisaUser()">Buscar </button>
+                    </form>
+
+                    <table class="table" id="tbUsuarios">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Editar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
    <script>
-        function validacaologin(){
+        function colocarEmEdicao(id)
+        {
+
+            $.ajax
+              (
+                  {
+                    type: "GET",
+                    url: "usuario/procuraporid",
+                    data: "id=" + id,
+                    success: function (response)
+                    {
+
+                      $("#nome").val(response.nome);
+                      $("#senha").val(response.senha);
+
+                      $('#telaPesquisaModal').modal('hide');
+                    }
+                  }
+              ).fail( function(xhr, status, errorthrows){
+                         alert("Erro ao buscar " + xhr.responseText)
+                     }
+                    ) ;
+
+        }
+
+        function pesquisaUser()
+        {
+          var nomeUsu = $("#nomeBusca").val();
+
+          if (nomeUsu.length > 0)
+          {
+            $.ajax
+              (
+                  {
+                    type: "GET",
+                    url: "usuario/procurapornome",
+                    data: "nome=" + nomeUsu,
+                    success: function (response)
+                    {
+
+                        $('#tbUsuarios > tbody > tr').remove();
+
+                        for ( var i=0; i < response.length; i++)
+                        {
+                           $('#tbUsuarios > tbody').append('<tr><td>' + response[i].id   + '</td><td>' + response[i].nome + '</td><td><button type="button" class="btn btn-primary" onclick="colocarEmEdicao('+response[i].id+')">Ver</button> </td></tr>');
+
+                        }
+                    }
+                  }
+              ).fail( function(xhr, status, errorthrows){
+                         alert("Erro ao buscar " + xhr.responseText)
+                     }
+                    ) ;
+          }
+        }
+
+        function cadastraUsuario(){
           var Usuario = "";
           var Senha = "";
-          Usuario = $("#nome").val();
-          Senha = $("#senha").val();
+          nome = $("#nome").val();
+          senha = $("#senha").val();
 
-          $.ajax(
+          $.ajax
+          (
               {
                 type: "POST",
                 url: "usuario/salva",
-                data: JSON.stringify({nome : Usuario, senha : Senha}),
-                contentType:"aplication/json;charset=utf-8",
-                success: function (response)
-                {alert("gravou com Sucesso")}
+                data: JSON.stringify(
+                      { nome:nome,
+                       senha:senha}
+                ),
+                contentType:"application/json;charset=utf-8",
+                success: function (response){
+                             alert("gravou com Sucesso")
+                         }
               }
-           ).fail( function(xhr, status, errorthrows)
-                   {alert("Erro ao gravar" + xhr.responseText)}
+           ).fail( function(xhr, status, errorthrows){
+                     alert("Erro ao gravar" + xhr.responseText)
+                  }
                  ) ;
 
         }
+
+        function limpaForm() {
+              document.getElementById("formLogin").reset();
+         }
    </script>
 </body>
 </html>

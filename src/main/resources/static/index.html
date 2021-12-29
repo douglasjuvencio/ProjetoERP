@@ -1,208 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>LDZ Informática</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <head>
+        <meta charset="UTF-8">
+        <title>Douglas Zeferino </title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <style type="text/css">
-        html {
-           margin-left: 15%;
-          margin-right: 15%;
-          margin-top: 10%;
-        }
-    </style>
-</head>
-<body>
+        <style type="text/css" href="estilo.css">
+            html {
+                margin-left: 30%;
+                margin-right: 30%;
+                margin-top: 15%;
+            }
+        </style>
+    </head>
 
-    <form action="" id="formLogin">
-        <div class="col-auto">
-            <label for="id" class="form-label">Id</label>
-            <input type="number" class="form-control" id="id" readonly >
-        </div>
-
-        <div class="col-auto">
-            <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" >
-        </div>
-
-        <div class="col-auto">
-            <label for="senha" class="form-label">Senha</label>
-            <input type="text" class="form-control" id="senha" >
-        </div>
-    </form>
-
-    <button type="button" class="btn btn-primary" onclick="cadastraUsuario()">Gravar</button>
-    <input  type="button" class="btn btn-primary" onclick="limpaForm()" value="Novo">
-    <input  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#telaPesquisaModal" value="Pesquisar">
-    <button type="button" class="btn btn-primary" onclick="apagaUsuario()">Apagar</button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="telaPesquisaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Pesquisa Usuário</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="nomeBusca" class="col-form-label">Informe o nome:</label>
-                            <input type="text" class="form-control" id="nomeBusca">
+    <body>
+        <div >
+            <form action="" id="formLogin">
+                    <div class="text" >Acesso ao sistema
+                        <div class="text">  </div>
+                        <div class="col-auto">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome"  >
                         </div>
 
-                        <button type="button" class="btn btn-success"  onclick="pesquisaUser()">Buscar </button>
-                    </form>
+                        <a></a>
 
-                    <div style="height:300px;overflow:scroll;" >
-                        <table class="table" id="tbUsuarios">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Editar</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                        <div class="col-auto">
+                            <label for="senha" class="form-label" >Senha</label>
+                            <input type="password" class="form-control" id="senha">
+                        </div>
 
-                            </tbody>
-                        </table>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-primary w-100" onclick="acessarLogin()" ><label>Acessar</label></button>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-
-                </div>
-            </div>
+            </form>
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-   <script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <!-- > Importanto a bliblioteca jquery< -->
 
-        function apagaUsuario(){
-             var id = $("#id").val();
-             if (confirm("Deseja Realmente Apagar ?")){
-                 $.ajax
+
+        <script>
+            function acessarLogin()
+            {
+              var nomeUsu = $("#nome").val();
+              var senhaUsu = $("#senha").val();
+
+              if (nomeUsu.length > 0)
+              {
+                $.ajax
                   (
                       {
-                        type: "DELETE",
-                        url: "usuario/deleta",
-                        data: "iduser=" + id,
+                        type: "GET",
+                        url: "usuario/liberalogin",
+                        data: "nome=" + nomeUsu,
                         success: function (response)
-                        {   limpaForm()
-                            alert(response);
+                        {
+                            if (nomeUsu == null || nomeUsu.trim() == '' || nomeUsu.length == 0 )   {
+                                 alert("Informe o usuário");
+                                 $("#nome").focus();
+                                 return;
+                            }
+
+                            if (senhaUsu == null || senhaUsu.trim() == '' || senhaUsu.length == 0 )   {
+                                 alert("Informe a senha");
+                                 $("#senha").focus();
+                                 return;
+                            }
+
+                            if (response.senha == null || response.senha.trim() == '' || response.senha.length == 0 )   {
+                                 alert("Usuário não encontrado");
+                                 $("#nome").focus();
+                                 return;
+                              }
+
+                            if (response.nome == nomeUsu && response.senha == senhaUsu ) {
+                              mostraMenu();
+                            }
+                            else {
+                               alert ("Usuário ou senha não conferem");
+                            }
                         }
                       }
                   ).fail( function(xhr, status, errorthrows){
-                             alert("Erro ao apagar o usuário " + xhr.responseText)
-                         }
+                             alert("Erro ao buscar " + xhr.responseText)
+                          }
                         ) ;
-             }
-        }
-
-
-        function colocarEmEdicao(id)
-        {
-
-            $.ajax
-              (
-                  {
-                    type: "GET",
-                    url: "usuario/procuraporid",
-                    data: "id=" + id,
-                    success: function (response)
-                    {
-
-                      $("#id").val(response.id);
-                      $("#nome").val(response.nome);
-                      $("#senha").val(response.senha);
-
-                      $('#telaPesquisaModal').modal('hide');
-                    }
-                  }
-              ).fail( function(xhr, status, errorthrows){
-                         alert("Erro ao buscar " + xhr.responseText)
-                     }
-                    ) ;
-
-        }
-
-        function pesquisaUser()
-        {
-          var nomeUsu = $("#nomeBusca").val();
-
-          if (nomeUsu.length > 0)
-          {
-            $.ajax
-              (
-                  {
-                    type: "GET",
-                    url: "usuario/procurapornome",
-                    data: "nome=" + nomeUsu,
-                    success: function (response)
-                    {
-
-                        $('#tbUsuarios > tbody > tr').remove();
-
-                        for ( var i=0; i < response.length; i++)
-                        {
-                           $('#tbUsuarios > tbody').append('<tr><td>' + response[i].id   + '</td><td>' + response[i].nome + '</td><td><button type="button" class="btn btn-primary" onclick="colocarEmEdicao('+response[i].id+')">Ver</button> </td></tr>');
-
-                        }
-                    }
-                  }
-              ).fail( function(xhr, status, errorthrows){
-                         alert("Erro ao buscar " + xhr.responseText)
-                     }
-                    ) ;
-          }
-        }
-
-        function cadastraUsuario(){
-          var nome = $("#nome").val();
-          var senha = $("#senha").val();
-          var id = $("#id").val();
-
-          if (nome == null || nome.trim() == '' || nome.length == 0 )   {
-             alert("Informe o nome");
-             $("#nome").focus();
-             return;
-          }
-
-          if (senha == null || senha.trim() == '' || senha.length == 0 )   {
-             alert("Informe a senha");
-             $("#senha").focus();
-             return;
-          }
-          $.ajax
-          (
-              {
-                type: "POST",
-                url: "usuario/salva",
-                data: JSON.stringify(
-                      { id:id,
-                        nome:nome,
-                       senha:senha}
-                ),
-                contentType:"application/json;charset=utf-8",
-                success: function (response){
-                             alert("gravou com Sucesso")
-                         }
               }
-           ).fail( function(xhr, status, errorthrows){
-                     alert("Erro ao gravar" + xhr.responseText)
-                  }
-                 ) ;
+            }
 
-        }
+            function mostraMenu() {
+                window.location.href = "menu.html"
 
-        function limpaForm() {
-              document.getElementById("formLogin").reset();
-         }
-   </script>
-</body>
+            }
+        </script>
+    </body>
 </html>

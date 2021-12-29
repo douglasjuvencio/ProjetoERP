@@ -17,4 +17,6 @@ public interface UserRepositary extends JpaRepository<User, Long> {
     @Query("SELECT u from User u where u.id = :id")
     public User procuraporid(@Param("id") long id);
 
+    @Query("SELECT u from User u where u.nome = :nome")
+    public User liberalogin(@Param("nome") String nome);
 }

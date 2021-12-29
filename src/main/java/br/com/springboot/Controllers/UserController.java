@@ -65,6 +65,12 @@ public class UserController {
         return new ResponseEntity<User>(usuario,HttpStatus.OK);
     }
 
+    @GetMapping("/liberalogin")
+    @ResponseBody
+    public  ResponseEntity<User> procuraporid( @RequestParam(name = "nome") String nome){
+        User usuario  = userRepositary.liberalogin(nome);
+        return new ResponseEntity<User>(usuario,HttpStatus.OK);
+    }
 
 
 
